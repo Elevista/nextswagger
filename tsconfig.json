@@ -13,7 +13,9 @@
     "types": [
       "@types/node",
       "@types/mkdirp",
-      "@nuxtjs/axios"
+      "next/types",
+      "@types/react",
+      "@types/react-dom",
     ],
     "strict": true
   },

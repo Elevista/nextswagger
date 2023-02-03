@@ -1,40 +1,26 @@
-# NuxTSwagger
-Nuxt-TS-Swagger plugin generator CLI
+# NexTSwagger
+Next-TS-Swagger plugin generator CLI
 
-[![npm package](https://img.shields.io/npm/v/nuxtswagger.svg?maxAge=2592000&style=flat-square)](https://www.npmjs.com/package/nuxtswagger)
-[![github stars](https://img.shields.io/github/stars/Elevista/nuxtswagger?style=social)](https://github.com/Elevista/nuxtswagger)
+[![npm package](https://img.shields.io/npm/v/nextswagger.svg?maxAge=2592000&style=flat-square)](https://www.npmjs.com/package/nextswagger)
+[![github stars](https://img.shields.io/github/stars/Elevista/nextswagger?style=social)](https://github.com/Elevista/nextswagger)
 
 ## Installation
 ```sh
-npm i -D nuxtswagger
+npm i -D nextswagger
 ```
 
 ## Requirements
-- [`Nuxt`](https://nuxtjs.org) base project
-- [`@nuxtjs/axios`](https://axios.nuxtjs.org) module
+- [`Next`](https://nextjs.org) base project
 
 ## Basic Usage
-in Nuxt project directory
+in Next project directory
 ```sh
-npx nuxtswagger https://api.server.foo/swagger.json
-```
-in `nuxt.config.js`
-```js
-module.exports = {
-  plugins: [
-    '~/plugins/api'
-  ]
-}
+npx nextswagger https://api.server.foo/swagger.json
 ```
 in component
 ```js
-export default {
-  async asyncData ({ $api }) {
-    return { foo: await $api.foo.get() }
-  },
-  data () { return { bar: undefined } },
-  async mounted () { this.bar = await this.$api.bar.get() }
-}
+import {api} from './api'
+const foo = await api.bar.get()
 ```
 
 ### Path param mode
@@ -43,60 +29,58 @@ export default {
 
 ```js
 /* default (1.1.0+) */
-$api.foo.bar(1).get(2)
-$api.foo.bar.get()
+api.foo.bar(1).get(2)
+api.foo.bar.get()
 
 /* underscore */
-$api.foo._bar.get(1, 2)
-$api.foo.bar.get()
+api.foo._bar.get(1, 2)
+api.foo.bar.get()
 ```
 
 ## Options
 
-options priority : command line > `nuxt.config` > `package.json`
+options priority : command line > `next.config` > `package.json`
 
 ```sh
-nuxtswagger argument1 --option1 value1 --option2 value2
+nextswagger argument1 --option1 value1 --option2 value2
 ```
 
-| option | description | default | example |
-| --- | --- | --- | --- |
-| (first argument) | Swagger schema JSON path | (required) | `http://..` or `./foo/swagger.json`  |
-| `src` | same as first argument | first argument | same as above  |
-| `plugins-dir` | Nuxt plugins directory | `plugins` |  |
-| `plugin-name` | Name for generated plugin | `api` |  |
-| `inject` | Nuxt plugin inject key | `{plugin-name}` |  |
-| `type-path` | Path for scheme type file | `{plugins-dir}/{plugin-name}/{types.ts}` | `./types/swagger.d.ts` |
-| `base-path` | base path | `/v1` | `/v2` |
-| `skip-header` | Ignore parameter in header | `false` | `true` |
-| `form` | Path param interface mode | (undefined) | `underscore` |
+| option           | description                | default                                  | example                             |
+|------------------|----------------------------|------------------------------------------|-------------------------------------|
+| (first argument) | Swagger schema JSON path   | (required)                               | `http://..` or `./foo/swagger.json` |
+| `src`            | same as first argument     | first argument                           | same as above                       |
+| `plugins-dir`    | Directory                  | `''`                                     |                                     |
+| `plugin-name`    | Name for generated flile   | `api`                                    |                                     |
+| `export-name`    | Export name                | `{plugin-name}`                          | `''`(export default)                |
+| `type-path`      | Path for scheme type file  | `{plugins-dir}/{plugin-name}/{types.ts}` | `./types/models.ts`                 |
+| `base-path`      | base path                  | `/v1`                                    | `/v2`                               |
+| `skip-header`    | Ignore parameter in header | `false`                                  | `true`                              |
+| `form`           | Path param interface mode  | (undefined)                              | `underscore`                        |
 
-### Set options using `package.json`
-```json
-{
-  "scripts": {
-    "swagger": "nuxtswagger"
-  },
-  "nuxtswagger": {
-    "pluginName": "foo",
-    "src": "https://api.server.foo/swagger.json"
-  }
-}
-```
-
-### Set options using `nuxt.config`
-
-*v1.2+*
+### Set options using `next.config`
 
 ```js
 export default {
   // support array
   publicRuntimeConfig: {
-    nuxtswagger: {
+    nextswagger: {
       pluginName: 'foo',
       // AxiosRequestConfig?
       axiosConfig: { baseURL: 'https://api-stage.server.foo' }
     }
+  }
+}
+```
+
+### Set options using `package.json`
+```json
+{
+  "scripts": {
+    "swagger": "nextswagger"
+  },
+  "nextswagger": {
+    "pluginName": "foo",
+    "src": "https://api.server.foo/swagger.json"
   }
 }
 ```
@@ -106,16 +90,16 @@ export default {
 ```json
 {
   "compilerOptions": {
-    "types": ["nuxtswagger/types"]
+    "types": ["nextswagger/types"]
   }
 }
 ```
 
 
 
-and `npm run swagger` or `npx nuxtswagger`
+and `npm run swagger` or `npx nextswagger`
 
 
 ## License
 ISC License
-Copyright (c) 2020, Elevista
+Copyright (c) 2023, Elevista

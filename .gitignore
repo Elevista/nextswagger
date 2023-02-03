@@ -2,8 +2,9 @@
 .DS_Store
 node_modules
 plugins
+api
 dist
 types
 *.tgz
 /package*
-/nuxt.config.*
+/next.config.*
