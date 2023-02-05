@@ -7,12 +7,10 @@ import * as mkdirp from 'mkdirp'
 import c from 'chalk'
 import { NextConfig } from 'next'
 import { AxiosRequestConfig } from 'axios'
-import fetchSpec from './fetchSpec'
-import V3 from './schema/v3/Template'
-import V2 from './schema/v2/Template'
-import { notNullish } from './utils'
+import { fetchSpec, notNullish } from 'tswagger'
 import serverConfig from 'next/dist/server/config'
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants'
+import { V2, V3 } from './TemplateNext'
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const { version } = require('../package.json')
