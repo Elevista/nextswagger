@@ -6,26 +6,14 @@ import _ from 'lodash'
 import * as mkdirp from 'mkdirp'
 import c from 'chalk'
 import { NextConfig } from 'next'
-import { AxiosRequestConfig } from 'axios'
 import { fetchSpec, notNullish } from 'tswagger'
 import serverConfig from 'next/dist/server/config'
 import { PHASE_DEVELOPMENT_SERVER } from 'next/constants'
 import { V2, V3 } from './TemplateNext'
+import { NexTSwaggerCliOptions as CliOptions, NexTSwaggerOptions as Options } from './index'
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const { version } = require('../package.json')
-
-export interface CliOptions {
-  src: string
-  pluginsDir: string
-  pluginName: string
-  exportName: string
-  typePath: string
-  basePath: string
-  skipHeader: boolean
-  form?: 'underscore'
-}
-export type Options = CliOptions & { axiosConfig?: AxiosRequestConfig }
 
 interface Argv extends Partial<CliOptions> { _: [string?] }
 const argvToOptions = ({ _: [$1], src = $1, ...rest }: Argv): Partial<CliOptions> => ({ src, ...rest })
