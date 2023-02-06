@@ -3,5 +3,6 @@
 node_modules
 plugins
 api
+lib
 src
 tsconfig.json
