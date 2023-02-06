@@ -3,7 +3,7 @@
   "version": "1.0.0-alpha.0",
   "description": "Next-TS-Swagger plugin generator CLI",
   "bin": {
-    "nextswagger": "dist/index.js"
+    "nextswagger": "dist/cli.js"
   },
   "scripts": {
     "alpha": "npm version prerelease --preid=alpha",

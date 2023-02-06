@@ -1,5 +1,5 @@
 import { V2T, V3T, V2spec, V3spec, TemplateCommon } from 'tswagger'
-import { Options } from './index'
+import { Options } from './cli'
 export type NextTemplateOptions = Options & { relTypePath: string }
 interface NextTemplate extends TemplateCommon { hasAxiosConfig: boolean }
 
