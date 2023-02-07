@@ -11,6 +11,7 @@ npm i -D nextswagger
 
 ## Requirements
 - [`Next`](https://nextjs.org) base project
+- [`axios`](https://www.npmjs.com/package/axios) module
 
 ## Basic Usage
 in Next project directory
@@ -49,7 +50,7 @@ nextswagger argument1 --option1 value1 --option2 value2
 |------------------|----------------------------|------------------------------------------|-------------------------------------|
 | (first argument) | Swagger schema JSON path   | (required)                               | `http://..` or `./foo/swagger.json` |
 | `src`            | same as first argument     | first argument                           | same as above                       |
-| `plugins-dir`    | Directory                  | `''`                                     |                                     |
+| `plugins-dir`    | Directory                  | `lib`                                    |                                     |
 | `plugin-name`    | Name for generated flile   | `api`                                    |                                     |
 | `export-name`    | Export name                | `{plugin-name}`                          | `''`(export default)                |
 | `type-path`      | Path for scheme type file  | `{plugins-dir}/{plugin-name}/{types.ts}` | `./types/models.ts`                 |
@@ -61,7 +62,12 @@ nextswagger argument1 --option1 value1 --option2 value2
 
 ```js
 export default {
-  // support array
+  serverRuntimeConfig: {
+    nextswagger: [
+      { pluginName: 'foo', src: 'https://api.server.foo/swagger.json' },
+      { pluginName: 'bar', src: 'https://api.server.bar/swagger.json' },
+    ]
+  },
   publicRuntimeConfig: {
     nextswagger: {
       pluginName: 'foo',
@@ -75,12 +81,8 @@ export default {
 ### Set options using `package.json`
 ```json
 {
-  "scripts": {
-    "swagger": "nextswagger"
-  },
   "nextswagger": {
-    "pluginName": "foo",
-    "src": "https://api.server.foo/swagger.json"
+    "pluginsDir": "api"
   }
 }
 ```

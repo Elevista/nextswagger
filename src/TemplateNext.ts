@@ -4,7 +4,7 @@ export type NextTemplateOptions = Options & { relTypePath: string }
 interface NextTemplate extends TemplateCommon { hasAxiosConfig: boolean }
 
 function axiosArrowFn (args: string, returnType: string, methodType: string, params: string) {
-  return `(${args}): $R<${returnType}> => _('${methodType}')(${params})`
+  return `(${args}): $R<${returnType}> => _('${methodType}', ${params})`
 }
 function pluginTemplate (this: NextTemplate, { object }: { object: string }) {
   const { importTypes, multipart, noInspect } = this
@@ -20,9 +20,9 @@ ${noInspect}
 import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 ${importConfig}${importTypes}
 export const $axios = Axios.create(${findAxiosConfig})
-type $R<T> = Promise<T & { $response: AxiosResponse }>
+type $R<T> = Promise<T & { readonly $response: AxiosResponse }>
 ${this.exportFormat(object)}
-const _ = (method: string) => (...args: any) => ($axios as any)[method](...args).then((x: AxiosResponse) => Object.defineProperty(x.data, '$response', {value: x}))
+const _ = (method: string, ...args: any) => ($axios as any)[method](...args).then((x: AxiosResponse) => Object.defineProperty(x.data, '$response', {value: x}))
 ${multipart}
 `.trimStart()
 }
