@@ -60,12 +60,13 @@ nextswagger argument1 --option1 value1 --option2 value2
 
 ### Set options using `next.config`
 
-```js
-export default {
+```ts
+import { NextConfig } from 'nextswagger'
+const config: NextConfig = {
   serverRuntimeConfig: {
     nextswagger: [
       { pluginName: 'foo', src: 'https://api.server.foo/swagger.json' },
-      { pluginName: 'bar', src: 'https://api.server.bar/swagger.json' },
+      { pluginName: 'bar', src: 'https://api.server.bar/swagger.json' }
     ]
   },
   publicRuntimeConfig: {
@@ -74,8 +75,9 @@ export default {
       // AxiosRequestConfig?
       axiosConfig: { baseURL: 'https://api-stage.server.foo' }
     }
-  }
+  },
 }
+export default config
 ```
 
 ### Set options using `package.json`
