@@ -7,14 +7,14 @@ function axiosArrowFn (args: string, returnType: string, methodType: string, par
   return `(${args}): $R<${returnType}> => _('${methodType}', ${params})`
 }
 function pluginTemplate (this: NextTemplate, { object }: { object: string }) {
-  const { importTypes, multipart, noInspect } = this
+  const { importTypes, multipart, noInspect, options: { pluginName } } = this
 
   const importConfig = this.hasAxiosConfig
     ? `import getConfig from 'next/config'
 const { publicRuntimeConfig } = getConfig()
 `
     : ''
-  const findAxiosConfig = importConfig ? '[publicRuntimeConfig?.nextswagger].flat().find(x => x?.pluginName === \'deus\')?.axiosConfig' : ''
+  const findAxiosConfig = importConfig ? `[publicRuntimeConfig?.nextswagger].flat().find(x => x?.pluginName === '${pluginName}')?.axiosConfig` : ''
   return `
 ${noInspect}
 import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
