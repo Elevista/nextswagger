@@ -20,9 +20,9 @@ ${noInspect}
 import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 ${importConfig}${importTypes}${exportAxiosConfig}
 export interface $customExtendResponse {}
-type $R<T> = Promise<T & $customExtendResponse & { readonly $response: AxiosResponse<T> }>
+type $R<T> = Promise<(T extends object ? T : { value: T }) & $customExtendResponse & { readonly $response: AxiosResponse<T> }>
 const $ep = (_: any) => (${object})
-${this.exportFormat('')}($axios = Axios.create(${exportAxiosConfig ? '$axiosConfig' : ''})) => $ep((method: string, ...args: any) => ($axios as any)[method](...args).then((x: AxiosResponse) => Object.defineProperty(x.data, '$response', {value: x})))
+${this.exportFormat('')}($axios = Axios.create(${exportAxiosConfig ? '$axiosConfig' : ''})) => $ep((method: string, ...args: any) => ($axios as any)[method](...args).then((x: AxiosResponse) => Object.defineProperty(Object(x.data) === x.data ? {value: x.data} : x.data, '$response', {value: x})))
 ${multipart}
 `.trimStart()
 }
