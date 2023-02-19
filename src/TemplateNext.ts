@@ -14,15 +14,14 @@ function pluginTemplate (this: NextTemplate, { object }: { object: string }) {
 const { publicRuntimeConfig } = getConfig()
 `
     : ''
-  const findAxiosConfig = importConfig ? `[publicRuntimeConfig?.nextswagger].flat().find(x => x?.pluginName === '${pluginName}')?.axiosConfig` : ''
+  const exportAxiosConfig = this.hasAxiosConfig ? `\nexport const $axiosConfig: AxiosRequestConfig = [publicRuntimeConfig?.nextswagger].flat().find(x => x?.pluginName === '${pluginName}')?.axiosConfig` : ''
   return `
 ${noInspect}
 import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-${importConfig}${importTypes}
-export const $axios = Axios.create(${findAxiosConfig})
+${importConfig}${importTypes}${exportAxiosConfig}
 type $R<T> = Promise<T & { readonly $response: AxiosResponse }>
-${this.exportFormat(object)}
-const _ = (method: string, ...args: any) => ($axios as any)[method](...args).then((x: AxiosResponse) => Object.defineProperty(x.data, '$response', {value: x}))
+const $ep = (_: any) => (${object})
+${this.exportFormat('')}($axios = Axios.create(${exportAxiosConfig ? '$axiosConfig' : ''})) => $ep((method: string, ...args: any) => ($axios as any)[method](...args).then((x: AxiosResponse) => Object.defineProperty(x.data, '$response', {value: x})))
 ${multipart}
 `.trimStart()
 }
