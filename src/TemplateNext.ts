@@ -19,7 +19,8 @@ const { publicRuntimeConfig } = getConfig()
 ${noInspect}
 import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 ${importConfig}${importTypes}${exportAxiosConfig}
-type $R<T> = Promise<T & { readonly $response: AxiosResponse }>
+export interface $customExtendResponse {}
+type $R<T> = Promise<T & $customExtendResponse & { readonly $response: AxiosResponse<T> }>
 const $ep = (_: any) => (${object})
 ${this.exportFormat('')}($axios = Axios.create(${exportAxiosConfig ? '$axiosConfig' : ''})) => $ep((method: string, ...args: any) => ($axios as any)[method](...args).then((x: AxiosResponse) => Object.defineProperty(x.data, '$response', {value: x})))
 ${multipart}
