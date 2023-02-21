@@ -1,6 +1,6 @@
 {
   "name": "nextswagger",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "Next-TS-Swagger plugin generator CLI",
   "bin": {
     "nextswagger": "dist/cli.js"
