@@ -7,22 +7,23 @@ function axiosArrowFn (args: string, returnType: string, methodType: string, par
   return `(${args}): $R<${returnType}> => _('${methodType}', ${params})`
 }
 function pluginTemplate (this: NextTemplate, { object }: { object: string }) {
-  const { importTypes, multipart, noInspect, options: { pluginName } } = this
+  const { importTypes, multipart, noInspect, options: { pluginName }, hasAxiosConfig } = this
 
-  const importConfig = this.hasAxiosConfig
+  const importConfig = hasAxiosConfig
     ? `import getConfig from 'next/config'
 const { publicRuntimeConfig } = getConfig()
 `
     : ''
-  const exportAxiosConfig = this.hasAxiosConfig ? `\nexport const $axiosConfig: AxiosRequestConfig = [publicRuntimeConfig?.nextswagger].flat().find(x => x?.pluginName === '${pluginName}')?.axiosConfig` : ''
+  const axiosConfig = hasAxiosConfig ? `[publicRuntimeConfig?.nextswagger].flat().find(x => x?.pluginName === '${pluginName}')?.axiosConfig || {}` : '{}'
   return `
 ${noInspect}
-import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-${importConfig}${importTypes}${exportAxiosConfig}
+import Axios, { AxiosStatic, AxiosRequestConfig, AxiosResponse } from 'axios'
+${importConfig}${importTypes}
 export interface $customExtendResponse {}
-type $R<T> = Promise<(T extends object ? T : { value: T }) & $customExtendResponse & { readonly $response: AxiosResponse<T> }>
+type $R<T> = Promise<T> & { readonly response: Promise<AxiosResponse<T> & $customExtendResponse> }
+export const $axiosConfig: Required<Parameters<AxiosStatic['create']>>[0] = ${axiosConfig}
 const $ep = (_: any) => (${object})
-${this.exportFormat('')}($axios = Axios.create(${exportAxiosConfig ? '$axiosConfig' : ''})) => $ep((method: string, ...args: any) => ($axios as any)[method](...args).then((x: AxiosResponse) => Object.defineProperty(Object(x.data) === x.data ? x.data : {value: x.data}, '$response', {value: x})))
+${this.exportFormat('')}($axios = Axios.create($axiosConfig)) => $ep((method: string, ...args: any) => ($axios as any)[method](...args).then((x: AxiosResponse) => Object.defineProperty(Object(x.data) === x.data ? x.data : {value: x.data}, '$response', {value: x})))
 ${multipart}
 `.trimStart()
 }
