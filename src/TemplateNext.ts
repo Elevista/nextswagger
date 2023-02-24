@@ -7,7 +7,7 @@ function axiosArrowFn (args: string, returnType: string, methodType: string, par
   return `(${args}): $R<${returnType}> => _('${methodType}', ${params})`
 }
 function pluginTemplate (this: NextTemplate, { object }: { object: string }) {
-  const { importTypes, multipart, noInspect, options: { pluginName }, hasAxiosConfig } = this
+  const { importTypes, multipart, noInspect, options: { pluginName }, hasAxiosConfig, exportCode } = this
 
   const importConfig = hasAxiosConfig
     ? `import getConfig from 'next/config'
@@ -23,7 +23,7 @@ export interface $customExtendResponse {}
 type $R<T> = Promise<T> & { readonly response: Promise<AxiosResponse<T> & $customExtendResponse> }
 export const $axiosConfig: Required<Parameters<AxiosStatic['create']>>[0] = ${axiosConfig}
 const $ep = (_: any) => (${object})
-${this.exportFormat('')}($axios = Axios.create($axiosConfig)) => $ep((method: string, ...args: any) => ($axios as any)[method](...args).then((x: AxiosResponse) => Object.defineProperty(Object(x.data) === x.data ? x.data : {value: x.data}, '$response', {value: x})))
+${exportCode}
 ${multipart}
 `.trimStart()
 }
